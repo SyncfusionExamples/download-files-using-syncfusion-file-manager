@@ -1,0 +1,45 @@
+﻿@page "/"
+
+@using Syncfusion.Blazor.FileManager
+@using Newtonsoft.Json
+
+<SfFileManager TValue="FileManagerDirectoryContent">
+    <FileManagerAjaxSettings Url="/api/Default/AzureFileoperations"
+                             UploadUrl="/api/Default/AzureUpload"
+                             DownloadUrl="/api/Default/AzureDownload"
+                             GetImageUrl="/api/Default/AzureGetImage">
+    </FileManagerAjaxSettings>
+    <FileManagerEvents TValue="FileManagerDirectoryContent" BeforeImageLoad="BeforeImageLoadEvent" BeforeDownload="BeforeDownloadEvent" OnSend="SendEvent"></FileManagerEvents>
+</SfFileManager>
+
+@code{
+    /// <summary>
+    /// Send event used to pass the client name for create, upload, copy and delete event.
+    /// </summary>
+    /// <param name="args"></param>
+    public void SendEvent(Syncfusion.Blazor.FileManager.BeforeSendEventArgs args)
+    {
+        args.HttpClientInstance.DefaultRequestHeaders.Remove("Client_Name");
+        args.HttpClientInstance.DefaultRequestHeaders.Add("Client_Name", "Test"));
+    }
+
+    /// <summary>
+    /// Before image upload event used to pass the client name for get image event.
+    /// </summary>
+    /// <param name="args"></param>
+    public void BeforeImageLoadEvent(Syncfusion.Blazor.FileManager.BeforeImageLoadEventArgs<FileManagerDirectoryContent> args)
+    {
+        args.ImageUrl = args.ImageUrl + "&Name=" + "Test";
+    }
+
+    /// <summary>
+    /// Before download event used to pass the client name for download event.
+    /// </summary>
+    /// <param name="args"></param>
+    public void BeforeDownloadEvent(BeforeDownloadEventArgs<FileManagerDirectoryContent> args)
+    {
+        //at NewName passing the selected client name and previousName passing the logged user mail id to log the download failure.
+        args.Data.DownloadFileDetails[0].NewName = "Test";
+    }
+}
+
