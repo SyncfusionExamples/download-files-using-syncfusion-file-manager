@@ -20,7 +20,7 @@
     public void SendEvent(Syncfusion.Blazor.FileManager.BeforeSendEventArgs args)
     {
         args.HttpClientInstance.DefaultRequestHeaders.Remove("Client_Name");
-        args.HttpClientInstance.DefaultRequestHeaders.Add("Client_Name", "Test"));
+        args.HttpClientInstance.DefaultRequestHeaders.Add("Client_Name", "Test");
     }
 
     /// <summary>
