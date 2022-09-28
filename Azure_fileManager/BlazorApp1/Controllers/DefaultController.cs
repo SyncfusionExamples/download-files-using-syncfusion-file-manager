@@ -43,15 +43,15 @@ namespace BlazorApp1.Controllers
         [Route("AzureFileOperations")]
         public object AzureFileOperations([FromBody] FileManagerDirectoryContent args)
         {
-            string ClientName = this.HttpContext.Request.Headers["Client_Name"].ToString();
+            string ContainerName = this.HttpContext.Request.Headers["Container_Name"].ToString();
             
             if (args.Path != "")
             {
-                //set the dynamic blob container based on selected client name
-                this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ClientName);
+                //Set the dynamic Blob container based on ContainerName.
+                this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ContainerName);
                 
                 string startPath = domain + "/" + blobName + "/";
-                string originalPath = (domain + "/" + blobName + "/" + parentFolder + "/" + ClientName).Replace(startPath, "");
+                string originalPath = (domain + "/" + blobName + "/" + parentFolder + "/" + ContainerName).Replace(startPath, "");
 
                 args.Path = (originalPath + "/" + args.Path).Replace("//", "/");
                 args.TargetPath = (originalPath + args.TargetPath).Replace("//", "/");
@@ -100,14 +100,14 @@ namespace BlazorApp1.Controllers
         [Route("AzureUpload")]
         public ActionResult AzureUpload(FileManagerDirectoryContent args)
         {
-            string ClientName = this.HttpContext.Request.Headers["Client_Name"].ToString();
+            string ContainerName = this.HttpContext.Request.Headers["Container_Name"].ToString();
            
             if (args.Path != "")
             {
-                //set the dynamic blob container based on selected client name
-                this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ClientName);
+                //Set the dynamic Blob container based on ContainerName.
+                this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ContainerName);
                 string startPath = domain + "/" + blobName + "/";
-                string originalPath = (domain + "/" + blobName + "/" + parentFolder + "/" + ClientName).Replace(startPath, "");
+                string originalPath = (domain + "/" + blobName + "/" + parentFolder + "/" + ContainerName).Replace(startPath, "");
                 args.Path = (originalPath + args.Path).Replace("//", "/");
             }
             FileManagerResponse uploadResponse = operation.Upload(args.Path, args.UploadFiles, args.Action, args.Data);
@@ -126,9 +126,9 @@ namespace BlazorApp1.Controllers
         public object AzureDownload(string downloadInput)
         {
             FileManagerDirectoryContent args = JsonConvert.DeserializeObject<FileManagerDirectoryContent>(downloadInput);
-            string ClientName = args.Data[0].NewName;
-            //set the dynamic blob container based on selected client name
-            this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ClientName);
+            string ContainerName = args.Data[0].NewName;
+            //Set the dynamic Blob container based on ContainerName.
+            this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + ContainerName);
 
             return operation.Download(args.Path, args.Names, args.Data);
         }
@@ -137,7 +137,7 @@ namespace BlazorApp1.Controllers
         [Route("AzureGetImage")]
         public async Task<IActionResult> AzureGetImage(FileManagerDirectoryContent args)
         {
-            //set the dynamic blob container based on selected client name
+            //Set the dynamic Blob container based on ContainerName.(arg.Name contains the ContainerName)
             this.operation.SetBlobContainer(domain + blobName + "/", domain + blobName + "/" + parentFolder + "/" + args.Name);
             
             return await this.operation.GetImageAsync(args.Path, args.Id, true, null, args.Data);

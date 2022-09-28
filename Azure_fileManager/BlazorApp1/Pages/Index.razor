@@ -14,17 +14,17 @@
 
 @code{
     /// <summary>
-    /// Send event used to pass the client name for create, upload, copy and delete event.
+    /// The SendEvent is used to pass the container name to create, upload, copy and delete events.
     /// </summary>
     /// <param name="args"></param>
     public void SendEvent(Syncfusion.Blazor.FileManager.BeforeSendEventArgs args)
     {
-        args.HttpClientInstance.DefaultRequestHeaders.Remove("Client_Name");
-        args.HttpClientInstance.DefaultRequestHeaders.Add("Client_Name", "Test");
+        args.HttpClientInstance.DefaultRequestHeaders.Remove("Container_Name");
+        args.HttpClientInstance.DefaultRequestHeaders.Add("Container_Name", "Test");
     }
 
     /// <summary>
-    /// Before image upload event used to pass the client name for get image event.
+    /// The BeforeImageLoadEvent is used to pass the container name to the get image event.
     /// </summary>
     /// <param name="args"></param>
     public void BeforeImageLoadEvent(Syncfusion.Blazor.FileManager.BeforeImageLoadEventArgs<FileManagerDirectoryContent> args)
@@ -33,12 +33,12 @@
     }
 
     /// <summary>
-    /// Before download event used to pass the client name for download event.
+    /// The BeforeDownloadEvent is used to pass the container name to the download event.
     /// </summary>
     /// <param name="args"></param>
     public void BeforeDownloadEvent(BeforeDownloadEventArgs<FileManagerDirectoryContent> args)
     {
-        //at NewName passing the selected client name and previousName passing the logged user mail id to log the download failure.
+        //At the NewName field, pass the container name.
         args.Data.DownloadFileDetails[0].NewName = "Test";
     }
 }
